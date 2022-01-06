@@ -1,0 +1,2406 @@
+--4.
+
+create table Locatie(
+    id_locatie number not null primary key,
+    judet varchar2(30) not null,
+    oras varchar2(20) not null,
+    strada varchar2(100) not null,
+    numar number
+);
+create table Categorie(
+    id_categorie number not null primary key,
+    denumire_categorie varchar2(50) not null
+);
+create table Firma_de_curierat(
+    id_curier number not null primary key,
+    denumire varchar2(10) not null,
+    telefon number(10) not null
+);
+create table Comanda(
+    id_comanda number not null primary key,
+    data date not null,
+    status varchar2(10)
+    );
+
+create table Utilizator(
+    id_utilizator number not null primary key,
+    nume  varchar2(30) not null,
+    prenume varchar2(30) not null,
+    email varchar2(30) not null,
+    telefon number(10),
+    id_locatie number,
+    constraint fk_utilizator_locatie foreign key(id_locatie)
+    references Locatie(id_locatie)
+);
+create table Depozit(
+    id_depozit number not null primary key,
+    email varchar2(30),
+    telefon number(10), 
+    id_locatie number(3) not null,
+    constraint fk_depozit_locatie foreign key(id_locatie)
+    references Locatie(id_locatie)
+);
+
+create table Produs(
+    id_produs number not null primary key,
+    denumire_produs varchar2(200) not null,
+    descriere varchar(500), 
+    pret number not null,
+    rating number(1),
+    id_categorie number,
+    constraint fk_produs_categorie foreign key(id_categorie)
+    references Categorie(id_categorie)    
+);
+
+create table Review(
+    id_review number not null primary key,
+    stele number(1) not null,
+    comentariu varchar2(2000),
+    data_review date not null,
+    id_utilizator number not null,
+    id_produs number not null,
+    constraint fk_review_utilizator foreign key(id_utilizator)
+    references Utilizator(id_utilizator),
+    constraint fk_review_produs foreign key(id_produs)
+  references Produs(id_produs) 
+);
+
+create table Disponibilitate(
+    id_depozit number not null,
+    id_produs number not null,
+    cantitate number,
+    constraint pk_disponibilitate primary key (id_depozit, id_produs),
+    constraint fk_disponibilitate_depozit foreign  key (id_depozit)
+    references Depozit(id_depozit),
+    constraint fk_disponibilitate_produs foreign  key (id_produs)
+    references Produs(id_produs)
+    );
+
+create table Continut(
+    id_comanda number not null,
+    id_produs number not null,
+    cantitate number not null,
+    constraint pk_continut primary key (id_comanda, id_produs),
+    constraint fk_continut_comanda foreign  key (id_comanda)
+    references Comanda(id_comanda),
+    constraint fk_continut_produs foreign  key (id_produs)
+    references Produs(id_produs)
+    );    
+
+create table Plasare_Comanda(
+    id_utilizator number not null,
+    id_comanda number not null,
+    id_curier number not null,
+    constraint pk_plasare_comanda primary key (id_utilizator, id_comanda, id_curier),
+    constraint fk_plasare_comanda_utilizator foreign  key (id_utilizator)
+    references Utilizator(id_utilizator),
+    constraint fk_plasare_comanda_comanda foreign  key (id_comanda)
+    references Comanda(id_comanda),
+    constraint fk_plasare_comanda_curier foreign  key (id_curier)
+    references Firma_de_curierat(id_curier)
+    );    
+
+
+--5.
+
+
+INSERT INTO locatie VALUES (
+    1,
+    'Timis',
+    'Timisoara',
+    'Str. Amforei',
+    3
+);
+
+INSERT INTO locatie VALUES (
+    2,
+    'Buzau',
+    'Buzau',
+    'Str. Spiru',
+    10
+);
+
+INSERT INTO locatie VALUES (
+    3,
+    'Dolj',
+    'Craiova',
+    'Str. Rubinelor',
+    2
+);
+
+INSERT INTO locatie VALUES (
+    4,
+    'Neamt',
+    'Roman',
+    'Str. Libertatii',
+    12
+);
+
+INSERT INTO locatie VALUES (
+    5,
+    'Buzau',
+    'Buzau',
+    'Bld. Carol I',
+    4
+);
+
+INSERT INTO locatie VALUES (
+    6,
+    'Bihor',
+    'Oradea',
+    'Str. Republicii',
+    26
+);
+
+INSERT INTO locatie VALUES (
+    7,
+    'Calarasi',
+    'Calarasi',
+    'Str. Parcului',
+    5
+);
+
+
+INSERT INTO locatie VALUES (
+    8,
+    'Timis',
+    'Timisoara',
+    'Str. Teiului',
+    4
+);
+
+INSERT INTO locatie VALUES (
+    9,
+    'Calarasi',
+    'Calarasi',
+    'Str. Belsugului',
+    24
+);
+
+INSERT INTO locatie VALUES (
+    10,
+    'Cluj',
+    'Dej',
+    'Str. Vidului',
+    7
+);
+
+INSERT INTO locatie VALUES (
+    11,
+    'Timis',
+    'Timisoara',
+    'Str. George Calinescu',
+    5
+);
+
+INSERT INTO locatie VALUES (
+    12,
+    'Bihor',
+    'Oradea',
+    'Str. Victoriei',
+    15
+);
+
+INSERT INTO locatie VALUES (
+    13,
+    'Cluj',
+    'Dej',
+    'Str. Reginei',
+    10
+);
+
+INSERT INTO locatie VALUES (
+    14,
+    'Tulcea',
+    'Tulcea',
+    'Str. Aurel Vlaicu',
+    24
+);
+
+INSERT INTO locatie VALUES (
+    15,
+    'Gorj',
+    'Targu Jiu',
+    'Str. Republicii',
+    16
+);
+
+INSERT INTO locatie VALUES (
+    16,
+    'Brasov',
+    'Brasov',
+    'Str. Unirii',
+    60
+);
+
+INSERT INTO locatie VALUES (
+    17,
+    'Gorj',
+    'Targu Jiu',
+    'Bld. Narciselor',
+    10
+);
+
+INSERT INTO locatie VALUES (
+    18,
+    'Braila',
+    'Braila',
+    'Str. Oituz',
+    3
+);
+
+INSERT INTO locatie VALUES (
+    19,
+    'Cluj',
+    'Turda',
+    'Str. Vasile Alecsandri',
+    12
+);
+
+INSERT INTO locatie VALUES (
+    20,
+    'Brasov',
+    'Brasov',
+    'Str. Tudor Vladimirescu',
+    34
+);
+
+INSERT INTO locatie VALUES (
+    21,
+    'Botosani',
+    'Dorohoi',
+    'Str. Gheorghe Doja',
+    85
+);
+
+INSERT INTO locatie VALUES (
+    22,
+    'Galati',
+    'Galati',
+    'Str. Barierei',
+    26
+);
+
+INSERT INTO locatie VALUES (
+    23,
+    'Gorj',
+    'Targu Jiu',
+    'Bld. Eroilor',
+    11
+);
+
+INSERT INTO locatie VALUES (
+    24,
+    'Vrancea',
+    'Focsani',
+    'Str. Unirii',
+    70
+);
+
+INSERT INTO locatie VALUES (
+    25,
+    'Cluj',
+    'Dej',
+    'Str. Mihai Eminescu',
+    53
+);
+
+INSERT INTO locatie VALUES (
+    26,
+    'Tulcea',
+    'Tulcea',
+    'Str. Muncilor',
+    23
+);
+
+INSERT INTO locatie VALUES (
+    27,
+    'Olt',
+    'Slatina',
+    'Bld. George Enescu',
+    22
+);
+
+INSERT INTO locatie VALUES (
+    28,
+    'Hunedoara',
+    'Petrosani',
+    'Str. Victoriei',
+    6
+);
+
+INSERT INTO locatie VALUES (
+    29,
+    'Constanta',
+    'Medgidia',
+    'Str. Zorilor',
+    95
+);
+
+INSERT INTO locatie VALUES (
+    30,
+    'Ilfov',
+    'Voluntari',
+    'Bld. Unirii',
+    89
+);
+
+CREATE SEQUENCE seq_id_u MINVALUE 1 START WITH 1 INCREMENT BY 1;
+
+INSERT INTO utilizator VALUES (
+    seq_id_u.NEXTVAL,
+    'Verdes',
+    'Laurentiu',
+    'verdes.laurentiu@gmail.com',
+    0262342933,
+    1
+);
+
+INSERT INTO utilizator VALUES (
+    seq_id_u.NEXTVAL,
+    'Radoi',
+    'Elena',
+    'radoi.elena@gmail.com',
+    0726287467,
+    2
+);
+
+INSERT INTO utilizator VALUES (
+    seq_id_u.NEXTVAL,
+    'Ionescu',
+    'Mihai',
+    'ionescu.mihai@gmail.com',
+    0256356098,
+    7
+);
+
+INSERT INTO utilizator VALUES (
+    seq_id_u.NEXTVAL,
+    'Popescu',
+    'Ana',
+    'popescu.ana@gmail.com',
+    0722423151,
+    5
+);
+
+INSERT INTO utilizator VALUES (
+    seq_id_u.NEXTVAL,
+    'Popescu',
+    'George',
+    'popescu.george@gmail.com',
+    0744888820,
+    4
+);
+
+INSERT INTO utilizator VALUES (
+    seq_id_u.NEXTVAL,
+    'Gheorghe',
+    'Paul',
+    'gheorghe.paul@gmail.com',
+    0740205533,
+    4
+);
+
+INSERT INTO utilizator VALUES (
+    seq_id_u.NEXTVAL,
+    'Ionescu',
+    'Laura',
+    'ionescu.laura@gmail.com',
+    0372796174,
+    3
+);
+
+INSERT INTO utilizator VALUES (
+    seq_id_u.NEXTVAL,
+    'Pop',
+    'Mihaela',
+    'pop.mihaela@gmail.com',
+    0246273779,
+    7
+);
+
+INSERT INTO utilizator VALUES (
+    seq_id_u.NEXTVAL,
+    'Ionescu',
+    'Iuliana',
+    'ionescu.iuliana@gmail.com',
+    0246273779,
+    10
+);
+
+INSERT INTO utilizator VALUES (
+    seq_id_u.NEXTVAL,
+    'Toma',
+    'Andreea',
+    'toma.andreea@gmail.com',
+    NULL,
+    NULL
+);
+
+INSERT INTO utilizator VALUES (
+    seq_id_u.NEXTVAL,
+    'Grigore',
+    'Paul',
+    'grigore.paul@gmail.com',
+    0722432523,
+    30
+);
+
+INSERT INTO utilizator VALUES (
+    seq_id_u.NEXTVAL,
+    'Popescu',
+    'Cristina',
+    'popescu.cristina@gmail.com',
+    0770163456,
+    29
+);
+
+INSERT INTO utilizator VALUES (
+    seq_id_u.NEXTVAL,
+    'Popescu',
+    'Cezara',
+    'popescu.cezara@gmail.com',
+    NULL,
+    NULL
+);
+
+INSERT INTO utilizator VALUES (
+    seq_id_u.NEXTVAL,
+    'Oprea',
+    'Emil',
+    'oprea.emil@gmail.com',
+    0770120456,
+    6
+);
+
+INSERT INTO utilizator VALUES (
+    seq_id_u.NEXTVAL,
+    'Vasile',
+    'Florin',
+    'vasile.florin@gmail.com',
+    NULL,
+    NULL
+);
+
+INSERT INTO utilizator VALUES (
+    seq_id_u.NEXTVAL,
+    'Florescu',
+    'Bogdan',
+    'florescu.bogdan@gmail.com',
+    0722283416,
+    15
+);
+
+INSERT INTO utilizator VALUES (
+    seq_id_u.NEXTVAL,
+    'Dumitru',
+    'Valentin',
+    'dumitru.valentin@gmail.com',
+    0332440697,
+    14
+);
+
+INSERT INTO utilizator VALUES (
+    seq_id_u.NEXTVAL,
+    'Munteanu',
+    'Robert',
+    'munteanu.robert@gmail.com',
+    0772453964,
+    11
+);
+
+INSERT INTO utilizator VALUES (
+    seq_id_u.NEXTVAL,
+    'Pop',
+    'Catalin',
+    'pop.catalin@gmail.com',
+    0740934836,
+    2
+);
+
+INSERT INTO utilizator VALUES (
+    seq_id_u.NEXTVAL,
+    'Petrescu',
+    'Anton',
+    'petrescu.anton@gmail.com',
+    0760143456,
+    17
+);
+
+INSERT INTO utilizator VALUES (
+    seq_id_u.NEXTVAL,
+    'Popescu',
+    'Daria',
+    'popescu.daria@gmail.com',
+    0214231016,
+    28
+);
+
+INSERT INTO utilizator VALUES (
+    seq_id_u.NEXTVAL,
+    'Voinea',
+    'George',
+    'voinea.george@gmail.com',
+    NULL,
+    NULL
+);
+
+INSERT INTO utilizator VALUES (
+    seq_id_u.NEXTVAL,
+    'Stoica',
+    'Paul',
+    'stoica.paul@gmail.com',
+    0742793360,
+    29
+);
+
+INSERT INTO utilizator VALUES (
+    seq_id_u.NEXTVAL,
+    'Lazar',
+    'Laura',
+    'lazar.laura@gmail.com',
+    NULL,
+    NULL
+);
+
+INSERT INTO utilizator VALUES (
+    seq_id_u.NEXTVAL,
+    'Udrea',
+    'Horia',
+    'udrea.horia@gmail.com',
+    0723898919,
+    23
+);
+
+INSERT INTO utilizator VALUES (
+    seq_id_u.NEXTVAL,
+    'Lupu',
+    'Marius',
+    'lupu.marius@gmail.com',
+    0256489898,
+    5
+);
+
+INSERT INTO utilizator VALUES (
+    seq_id_u.NEXTVAL,
+    'Mihailescu',
+    'Ana',
+    'mihailescu.ana@gmail.com',
+    NULL,
+    NULL
+);
+
+INSERT INTO utilizator VALUES (
+    seq_id_u.NEXTVAL,
+    'Barbu',
+    'Lucia',
+    'barbu.lucia@gmail.com',
+    0234544409,
+    9
+);
+
+INSERT INTO utilizator VALUES (
+    seq_id_u.NEXTVAL,
+    'Dragomir',
+    'Anton',
+    'dragomir.anton@gmail.com',
+    0721888457,
+    10
+);
+
+INSERT INTO utilizator VALUES (
+    seq_id_u.NEXTVAL,
+    'Dima',
+    'Iuliana',
+    'dima.iuliana@gmail.com',
+    NULL,
+    NULL
+);
+
+INSERT INTO utilizator VALUES (
+    seq_id_u.NEXTVAL,
+    'Oprea',
+    'Florentina',
+    'oprea.florentina@gmail.com',
+    NULL,
+    NULL
+);
+
+INSERT INTO utilizator VALUES (
+    seq_id_u.NEXTVAL,
+    'Georgescu',
+    'Mariana',
+    'georgescu.mariana@gmail.com',
+    NULL,
+    NULL
+);
+
+INSERT INTO utilizator VALUES (
+    seq_id_u.NEXTVAL,
+    'Ursu',
+    'Cristian',
+    'ursu.cristian@gmail.com',
+    0744496403,
+    20
+);
+
+INSERT INTO utilizator VALUES (
+    seq_id_u.NEXTVAL,
+    'Mischie',
+    'Emilia',
+    'mischie.emilia@gmail.com',
+    0721332962,
+    21
+);
+
+INSERT INTO utilizator VALUES (
+    seq_id_u.NEXTVAL,
+    'Epureanu',
+    'Paul',
+    'epureanu.paul@gmail.com',
+    0726342562,
+    29
+);
+
+INSERT INTO firma_de_curierat VALUES (
+    1,
+    'GLS',
+    0753424324
+);
+
+INSERT INTO firma_de_curierat VALUES (
+    2,
+    'Sameday',
+    0230536324
+);
+
+INSERT INTO firma_de_curierat VALUES (
+    3,
+    'FAN Curier',
+    0784234734
+);
+
+INSERT INTO firma_de_curierat VALUES (
+    4,
+    'Cargus',
+    0770234968
+);
+
+INSERT INTO firma_de_curierat VALUES (
+    5,
+    'DPD',
+    0775264563
+);
+
+INSERT INTO depozit VALUES (
+    1,
+    'a_depozit@gmail.com',
+    0773624843,
+    27
+);
+
+INSERT INTO depozit VALUES (
+    2,
+    'b_depozit@gmail.com',
+    0773255243,
+    8
+);
+
+INSERT INTO depozit VALUES (
+    3,
+    'c_depozit@gmail.com',
+    0773266363,
+    12
+);
+
+INSERT INTO depozit VALUES (
+    4,
+    'd_depozit@gmail.com',
+    0773858843,
+    13
+);
+
+INSERT INTO depozit VALUES (
+    5,
+    'e_depozit@gmail.com',
+    0772295877,
+    16
+);
+
+INSERT INTO depozit VALUES (
+    6,
+    'f_depozit@gmail.com',
+    0773859903,
+    18
+);
+
+INSERT INTO depozit VALUES (
+    7,
+    'g_depozit@gmail.com',
+    0776205877,
+    19
+);
+
+INSERT INTO depozit VALUES (
+    8,
+    'h_depozit@gmail.com',
+    0774959947,
+    22
+);
+
+INSERT INTO depozit VALUES (
+    9,
+    'i_depozit@gmail.com',
+    0778992257,
+    24
+);
+
+INSERT INTO depozit VALUES (
+    10,
+    'j_depozit@gmail.com',
+    0778305873,
+    25
+);
+
+INSERT INTO depozit VALUES (
+    11,
+    'k_depozit@gmail.com',
+    0748212873,
+    3
+);
+
+INSERT INTO categorie VALUES (
+    1,
+    'Laptop, Tablete si Telefoane'
+);
+
+INSERT INTO categorie VALUES (
+    2,
+    'Fashion'
+);
+
+INSERT INTO categorie VALUES (
+    3,
+    'Bacanie'
+);
+
+INSERT INTO categorie VALUES (
+    4,
+    'TV, Audio-Video si Foto'
+);
+
+INSERT INTO categorie VALUES (
+    5,
+    'Ingrijire personala si Cosmetice'
+);
+
+INSERT INTO produs VALUES (
+    1,
+    'Telefon mobil Apple iPhone 11, 128GB, Black',
+    'Sistem nou cu doua camere. Baterie pentru toata ziua. Cea mai rezistenta sticla folosita  vreodata intr-un smartphone. Cel mai rapid procesor Apple din toate timpurile. 
+ Sase noi culori superbe. Ecran pe tot afisajul LCD Liquid Retina de 6.1 inchi. Rezistenta la apa pentru adancimi de pana la 2 metri timp de 30 de minute. Video 4K la 60 fps pe orice camera. Obiectiv grandangular pentru o scena de patru ori mai mare. Roteste, decupeaza si adauga filtre la fel de usor ca in cazul pozelor.
+'
+    ,
+    3570,
+    4,
+    1
+);
+
+INSERT INTO produs VALUES (
+    2,
+    'Laptop ultraportabil Huawei MateBook D14 2020 cu procesor AMD Ryzen 5 3500U pana la 3.70 GHz, 14", Full HD, IPS, 8GB, 512GB SSD, Radeon Vega 8, Windows 10 Home, Mystic Silver'
+    ,
+    'HUAWEI MateBook D 14 este dotat cu un remarcabil ecran IPS 1920 x 1080, iar marginile au fost decupate pana la doar 4,8 mm, ceea ce face ca ecranul FullView de 14 inch sa arate aproape nesfarsit. Cu unghiul sau de vizualizare de 178°, indiferent daca va plasati intr-o experienta cinematografica sau trimiteti doar un e-mail, sunteti imediat introdus catre un tratament vizual prin ecranul frumos si viu.'
+    ,
+    3690,
+    5,
+    1
+);
+
+INSERT INTO produs VALUES (
+    3,
+    'Tableta Samsung Galaxy Tab A (2019), Quad Core, 8", 2GB RAM, 32GB, Wi-Fi, Black',
+    'Descopera un partener util in Galaxy Tab A (8,0", 2019), o tableta care exceleaza la elementele de baza si care include mult mai multe. Avand un design usor de tinut intr-o mana, aceasta este subtire, compacta si portabila, fiind un amestec ideal de performanta, design si accesibilitate.'
+    ,
+    739,
+    NULL,
+    1
+);
+
+INSERT INTO produs VALUES (
+    4,
+    'Laptop ultraportabil Dell Latitude 3410 cu procesor Intel Celeron 5205U 1.90 GHz, 14", Full HD, 8GB, 128GB SSD, 1TB HDD, Intel UHD Graphics, Ubuntu, Grey'
+    ,
+    'Mai mic. Mai subtire. Mai inteligent.
+Cel mai mic laptop de 14” din lume are o camera web inovatoare pentru videoconferinte fara intreruperi, de inalta calitate, la care se adauga cele mai recente procesoare Intel si aplicatia Dell Optimizer.'
+    ,
+    1904,
+    NULL,
+    1
+);
+
+INSERT INTO produs VALUES (
+    5,
+    'Laptop Lenovo IdeaPad 3 15ITL6 cu procesor Intel Core i3-1115G4, 15.6", Full HD,IPS, 4GB, 256GB SSD, Intel UHD Graphics, No OS, Sand'
+    ,
+    'IdeaPad 3 este un laptop entry-level suficient de puternic pentru a va ajuta sa duceti lucrurile la bun sfarsit. Procesorul Intel Core  ofera o performanta rapida, multitasking fara efort si o excelenta experienta de divertisment.'
+    ,
+    1899,
+    1,
+    1
+);
+
+INSERT INTO produs VALUES (
+    6,
+    'Telefon mobil Allview A20 Lite, Dual SIM, 32GB, 3G, Blue Gradient',
+    'A20 Lite este printre primele smartphone-uri cu Android 10 (Go Edition). Este potrivit persoanelor active, care nu rateaza sa se conecteze la tot ce ii inconjoara, isi fac planuri, socializeaza si vor sa descopere noi culturi. Si daca vor sa iasa in evidenta, culoarea Blue Jeans este atuul perfect.'
+    ,
+    293,
+    1.5,
+    1
+);
+
+INSERT INTO produs VALUES (
+    7,
+    'Vesta dama cu gluga, Negru',
+    'Vesta dama casual/sport eleganta cu gluga si buzunare laterale ce se inchid cu fermoar',
+    160,
+    NULL,
+    2
+);
+
+INSERT INTO produs VALUES (
+    8,
+    'Pulover dama de Craciun, MAYKA, din bumbac 80%, poliester 20%, model Rudolph, culoare gri, marime XL-2XL',
+    'Pulover gri, compozitie - 80% bumbac, 20% poliester, pentru sarbatorile de iarna.
+Imprimarea este realizata direct in tesatura.
+Se spala la temperatura de 30 grade, pe dos si fara inalbitori sau alti detergenti agresivi.
+A nu se calca pe imprimeu!!!
+Astfel imprimeul va rezista in timp.'
+    ,
+    89,
+    NULL,
+    2
+);
+
+INSERT INTO produs VALUES (
+    9,
+    'Tricou barbati craciun fericit negru, Negru',
+    'Tricou de calitate pentru barbati croiala tubulara, de gramaj mediu. Guler de calitate cu adaos de 5 % elastan, cu banda de intarire la umar. Tricoul nu are cusaturi laterale pastrandu-si forma in timp. Potrivit pentru orice tinuta casual sau sport.'
+    ,
+    59,
+    2,
+    2
+);
+
+INSERT INTO produs VALUES (
+    10,
+    'Ulei de floarea soarelui Unisol 2l',
+    'Unisol din ulei de prima presa.
+100% Ulei de prima presa de floarea-soarelui.
+Unisol din ulei de prima-presa este primul ulei romanesc obtinut 100% din prima presare a semintelor de floarea-soarelui, rafinat la gust si cu miros echilibrat.
+A se pastra la temperatura ambianta, ferit de razele directe ale soarelui , caldura si mirosuri straine.'
+    ,
+    15,
+    5,
+    3
+);
+
+INSERT INTO produs VALUES (
+    11,
+    'Sos pesto genovese Barilla, 190g',
+    'Frunzele de busuioc italian din abundenta se unesc gustului autentic al specialitatii Parmigiano Reggiano DOP pentru a obtine un sos pesto natural, lejer, cu nuante estivale. Pregatit fara a adauga conservanti, sosul Pesto alla Genovese de la Barilla este tocmai bun de a darui pastelor cat mai mult din aroma  sublima a Italiei.'
+    ,
+    12,
+    5,
+    3
+);
+
+INSERT INTO produs VALUES (
+    12,
+    'Sos cheddar Hellmanns, 250ml',
+    'Sosul Cheddar de la Hellmanns, cremos si consistent, o sa fie preferatul tau daca esti fan nachos, burgeri si cartofi prajiti. Si cine nu e fan?'
+    ,
+    10,
+    1,
+    3
+);
+
+INSERT INTO produs VALUES (
+    13,
+    'Praline crocante cu nuca de cocos si migdale Raffaello, 230g',
+    'Specialitati crocante de nuca de cocos cu migdala intreaga in interior.',
+    17,
+    NULL,
+    3
+);
+
+INSERT INTO produs VALUES (
+    14,
+    'Laptop Apple MacBook',
+    'Intel Core i9 2.3Ghz, 16GB RAM, 1TB SSD',
+    15000,
+    NULL,
+    3
+);
+
+INSERT INTO produs VALUES (
+    15,
+    'Batoane de ciocolata KitKat mini, 200g',
+    '
+Se spune ca lucrurile bune vin in pachete mici, asa ca aceasta este la dimensiunea perfecta pentru un moment de rasfat cu o napolitana crocanta si bunatatea ciocolatei cu lapte. O mica placere vinovata de zi - KITKAT, motivul pentru care exista pauzele!'
+    ,
+    10,
+    NULL,
+    3
+);
+
+INSERT INTO produs VALUES (
+    16,
+    'Cafea Boabe Lavazza Gusto Forte, 1 Kg',
+    'Lavazza Gusto Forte este produsa special pentru segmentul Vending, dar aroma deosebita recomanda aceasta cafea inclusiv pentru consumul acasa sau la birou. Cafeaua este deopotriva puternica si aromata, fiind foarte apreciata pentru gustul final de cacao. Lavazza Vending Gusto Forte a fost conceputa de maestrii italieni special pentru a-si pastra intacte proprietatile, chiar daca este depozitata in aparatul de cafea pentru perioade mai mari de timp'
+    ,
+    33,
+    NULL,
+    3
+);
+
+INSERT INTO produs VALUES (
+    17,
+    'Televizor Samsung 43AU8072, 108 cm, Smart, 4K Ultra HD, LED, Clasa G',
+    'Cufunda-te in imaginea cu un miliard de nuante de culoare. Dynamic Crystal Color ofera variatii realiste, astfel incat sa poti vedea fiecare detaliu.'
+    ,
+    1989,
+    NULL,
+    4
+);
+
+INSERT INTO produs VALUES (
+    18,
+    'Boxa portabila Hama SoundBarrel, Waterproof, 60 W, Negru',
+    'Sunet mai amplu pentru petrecere la interior sau in gradina: doua difuzoare de 20 W si doua radiatoare pasive (de cate 10 W) pe laterale pentru un sunet puternic;'
+    ,
+    279,
+    NULL,
+    4
+);
+
+INSERT INTO produs VALUES (
+    19,
+    'Microsistem audio Philips AZ127/12, Dynamic Bass, CD, caseta',
+    'Dynamic Bass Boost optimizeaza frecventele joase in functie de volum, prin simpla apasare a unui buton. De obicei, frecventele joase ale basului se pierd cand volumul este diminuat. Pentru a contracara acest efect, functia Dynamic Bass Boost amplifica nivelul basului, pentru ca dumneavoastra sa va puteti bucura de un sunet consistent chiar si atunci cand reduceti volumul.'
+    ,
+    239,
+    NULL,
+    4
+);
+
+INSERT INTO produs VALUES (
+    20,
+    'Televizor Philips 43PUS8536/12, 108 cm, Smart Android, 4K Ultra HD, LED, Clasa G',
+    'Acum este foarte usor sa iti alegi urmatorul televizor. Daca iti doresti imagine si sunet superbe, conectivitate usoara si experienta jocurilor rapide si fara complicatii, cauti televizorul ideal. In plus, vei beneficia si de Ambilight, pentru o experienta captivanta de neegalat.'
+    ,
+    2399,
+    4,
+    4
+);
+
+INSERT INTO produs VALUES (
+    21,
+    'Crema hidratanta pentru fata si corp CeraVe pentru piele uscata si foarte uscata, 340 g',
+    'Crema Hidratanta CeraVe are la baza o formula care ofera hidratare pe durata intregii zile, avand o textura placuta, cu finisare uscata la aplicare, ce ajuta la repararea barierei cutanate.'
+    ,
+    36,
+    5,
+    5
+);
+
+INSERT INTO produs VALUES (
+    22,
+    'Crema hidratanta hranitoare Uriage, 40ml',
+    'Crema cu textura lejera pentru hidratarea tenului normal, cu tendinta de uscare. Hidrateaza, hraneste si da luminozitate tenului. Ajuta la formarea si mentinerea unui nivel optim de hidratare in piele - pentru 24 ore.'
+    ,
+    39,
+    3,
+    5
+);
+
+INSERT INTO produs VALUES (
+    23,
+    'Apa de Parfum Tom Ford, Oud Wood, 100 ml',
+    'Parfumul prezinta Lemn de Agar(Oud), lemn de trandafir brazilian, cardamom, piper de Sichuan, lemn de santal, vetiver, boabe de tonka, vanilie si ambra.'
+    ,
+    1180,
+    5,
+    5
+);
+
+INSERT INTO produs VALUES (
+    24,
+    'Gel spumant purifiant La Roche-Posay Effaclar, 400 ml',
+    'EFFACLAR Gel Spumant purifica pielea datorita agentilor de curatare special selectionati pentru pielea sensibila. Elimina impuritatile si excesul de sebum, lasand pielea curata si proaspata. '
+    ,
+    49,
+    NULL,
+    5
+);
+
+INSERT INTO produs VALUES (
+    25,
+    'Apa Micelara CeraVe, 295ml',
+    'Creata impreuna cu medici dermatologi, apa micelara Cerave contine 3 ceramide esentiale si Niacinamida (vitamina B3), cu rol de calmare a pielii.'
+    ,
+    35,
+    NULL,
+    5
+);
+
+INSERT INTO comanda VALUES (
+    1,
+    TO_DATE('18/03/2018', 'dd/mm/yyyy'),
+    'Livrat'
+);
+
+INSERT INTO comanda VALUES (
+    2,
+    TO_DATE('13/04/2018', 'dd/mm/yyyy'),
+    'Livrat'
+);
+
+INSERT INTO comanda VALUES (
+    3,
+    TO_DATE('19/08/2018', 'dd/mm/yyyy'),
+    'Livrat'
+);
+
+INSERT INTO comanda VALUES (
+    4,
+    TO_DATE('7/03/2019', 'dd/mm/yyyy'),
+    'Livrat'
+);
+
+INSERT INTO comanda VALUES (
+    5,
+    TO_DATE('28/05/2019', 'dd/mm/yyyy'),
+    'Livrat'
+);
+
+INSERT INTO comanda VALUES (
+    6,
+    TO_DATE('18/06/2019', 'dd/mm/yyyy'),
+    'Livrat'
+);
+
+INSERT INTO comanda VALUES (
+    7,
+    TO_DATE('28/08/2019', 'dd/mm/yyyy'),
+    'Livrat'
+);
+
+INSERT INTO comanda VALUES (
+    8,
+    TO_DATE('12/02/2020', 'dd/mm/yyyy'),
+    'Livrat'
+);
+
+INSERT INTO comanda VALUES (
+    9,
+    TO_DATE('23/05/2020', 'dd/mm/yyyy'),
+    'Livrat'
+);
+
+INSERT INTO comanda VALUES (
+    10,
+    TO_DATE('26/05/2020', 'dd/mm/yyyy'),
+    'Livrat'
+);
+
+INSERT INTO comanda VALUES (
+    11,
+    TO_DATE('3/02/2021', 'dd/mm/yyyy'),
+    'Livrat'
+);
+
+INSERT INTO comanda VALUES (
+    12,
+    TO_DATE('6/08/2021', 'dd/mm/yyyy'),
+    'Livrat'
+);
+
+INSERT INTO comanda VALUES (
+    13,
+    TO_DATE('8/08/2021', 'dd/mm/yyyy'),
+    'Livrat'
+);
+
+INSERT INTO comanda VALUES (
+    14,
+    TO_DATE('15/11/2021', 'dd/mm/yyyy'),
+    'Livrat'
+);
+
+INSERT INTO comanda VALUES (
+    15,
+    TO_DATE('29/12/2021', 'dd/mm/yyyy'),
+    'Expediat'
+);
+
+INSERT INTO comanda VALUES (
+    16,
+    TO_DATE('30/12/2021', 'dd/mm/yyyy'),
+    'Expediat'
+);
+
+INSERT INTO comanda VALUES (
+    17,
+    TO_DATE('2/01/2022', 'dd/mm/yyyy'),
+    'Procesat'
+);
+
+INSERT INTO comanda VALUES (
+    18,
+    TO_DATE('6/12/2022', 'dd/mm/yyyy'),
+    'Procesat'
+);
+
+INSERT INTO comanda VALUES (
+    19,
+    TO_DATE('8/01/2022', 'dd/mm/yyyy'),
+    'Procesat'
+);
+
+INSERT INTO comanda VALUES (
+    20,
+    TO_DATE('10/01/2022', 'dd/mm/yyyy'),
+    'Procesat'
+);
+
+INSERT INTO continut VALUES (
+    1,
+    1,
+    2
+);
+
+INSERT INTO continut VALUES (
+    1,
+    2,
+    2
+);
+
+INSERT INTO continut VALUES (
+    2,
+    3,
+    2
+);
+
+INSERT INTO continut VALUES (
+    3,
+    4,
+    3
+);
+
+INSERT INTO continut VALUES (
+    3,
+    5,
+    1
+);
+
+INSERT INTO continut VALUES (
+    3,
+    6,
+    5
+);
+
+INSERT INTO continut VALUES (
+    4,
+    7,
+    3
+);
+
+INSERT INTO continut VALUES (
+    4,
+    25,
+    3
+);
+
+INSERT INTO continut VALUES (
+    5,
+   23,
+    2
+);
+
+INSERT INTO continut VALUES (
+    5,
+    3,
+    1
+);
+
+INSERT INTO continut VALUES (
+    6,
+    12,
+    1
+);
+
+INSERT INTO continut VALUES (
+    6,
+    21,
+    2
+);
+
+INSERT INTO continut VALUES (
+    6,
+    22,
+    4
+);
+
+INSERT INTO continut VALUES (
+    6,
+    17,
+    1
+);
+
+INSERT INTO continut VALUES (
+    7,
+    14,
+    2
+);
+
+INSERT INTO continut VALUES (
+    7,
+   2,
+    1
+);
+
+INSERT INTO continut VALUES (
+    8,
+    1,
+    2
+);
+
+INSERT INTO continut VALUES (
+    9,
+    10,
+    1
+);
+
+INSERT INTO continut VALUES (
+    10,
+    11,
+    1
+);
+
+INSERT INTO continut VALUES (
+    11,
+    9,
+    3
+);
+
+INSERT INTO continut VALUES (
+    12,
+    19,
+    2
+);
+
+INSERT INTO continut VALUES (
+    13,
+    2,
+    1
+);
+
+INSERT INTO continut VALUES (
+    14,
+    5,
+    2
+);
+
+INSERT INTO continut VALUES (
+    14,
+    7,
+    1
+);
+
+INSERT INTO continut VALUES (
+    15,
+    6,
+    1
+);
+
+INSERT INTO continut VALUES (
+    16,
+    3,
+    1
+);
+
+INSERT INTO continut VALUES (
+    16,
+    20,
+    1
+);
+
+INSERT INTO continut VALUES (
+    17,
+    8,
+    6
+);
+
+INSERT INTO continut VALUES (
+    19,
+    5,
+    2
+);
+
+INSERT INTO continut VALUES (
+    20,
+    12,
+    1
+);
+
+INSERT INTO plasare_comanda VALUES (
+    1,
+    1,
+    2
+);
+
+INSERT INTO plasare_comanda VALUES (
+    3,
+    2,
+    2
+);
+
+INSERT INTO plasare_comanda VALUES (
+    5,
+    3,
+    3
+);
+
+INSERT INTO plasare_comanda VALUES (
+    2,
+    4,
+    1
+);
+
+INSERT INTO plasare_comanda VALUES (
+    1,
+    5,
+    4
+);
+
+INSERT INTO plasare_comanda VALUES (
+    5,
+    6,
+    1
+);
+
+INSERT INTO plasare_comanda VALUES (
+    17,
+    7,
+    1
+);
+
+INSERT INTO plasare_comanda VALUES (
+    23,
+    8,
+    2
+);
+
+INSERT INTO plasare_comanda VALUES (
+    16,
+    9,
+    4
+);
+
+INSERT INTO plasare_comanda VALUES (
+    9,
+    10,
+    4
+);
+
+INSERT INTO plasare_comanda VALUES (
+    6,
+    11,
+    3
+);
+
+INSERT INTO plasare_comanda VALUES (
+    33,
+    12,
+    5
+);
+
+INSERT INTO plasare_comanda VALUES (
+    34,
+    13,
+    5
+);
+
+INSERT INTO plasare_comanda VALUES (
+    28,
+    14,
+    3
+);
+
+INSERT INTO plasare_comanda VALUES (
+    35,
+    15,
+    1
+);
+
+INSERT INTO plasare_comanda VALUES (
+    29,
+    16,
+    4
+);
+
+INSERT INTO plasare_comanda VALUES (
+    23,
+    17,
+    5
+);
+
+INSERT INTO plasare_comanda VALUES (
+    4,
+    18,
+    2
+);
+
+INSERT INTO plasare_comanda VALUES (
+    12,
+    19,
+    3
+);
+
+INSERT INTO plasare_comanda VALUES (
+    25,
+    20,
+    1
+);
+
+INSERT INTO disponibilitate VALUES (
+    1,
+    1,
+    20
+);
+
+INSERT INTO disponibilitate VALUES (
+    1,
+    2,
+    32
+);
+
+INSERT INTO disponibilitate VALUES (
+    1,
+    3,
+    5
+);
+
+INSERT INTO disponibilitate VALUES (
+    2,
+    4,
+    12
+);
+
+INSERT INTO disponibilitate VALUES (
+    2,
+    5,
+    25
+);
+
+INSERT INTO disponibilitate VALUES (
+    2,
+    6,
+    267
+);
+
+INSERT INTO disponibilitate VALUES (
+    2,
+    7,
+    244
+);
+
+INSERT INTO disponibilitate VALUES (
+    3,
+    8,
+    88
+);
+
+INSERT INTO disponibilitate VALUES (
+    4,
+    9,
+    100
+);
+
+INSERT INTO disponibilitate VALUES (
+    4,
+    10,
+    121
+);
+
+INSERT INTO disponibilitate VALUES (
+    4,
+    11,
+    141
+);
+
+INSERT INTO disponibilitate VALUES (
+    5,
+    12,
+    70
+);
+
+INSERT INTO disponibilitate VALUES (
+    5,
+    13,
+    78
+);
+
+INSERT INTO disponibilitate VALUES (
+    5,
+    14,
+    35
+);
+
+INSERT INTO disponibilitate VALUES (
+    6,
+    15,
+    4
+);
+
+INSERT INTO disponibilitate VALUES (
+    7,
+    16,
+    20
+);
+
+INSERT INTO disponibilitate VALUES (
+    8,
+    17,
+    23
+);
+
+INSERT INTO disponibilitate VALUES (
+    8,
+    18,
+    18
+);
+
+INSERT INTO disponibilitate VALUES (
+    9,
+    19,
+    42
+);
+
+INSERT INTO disponibilitate VALUES (
+    10,
+    20,
+    32
+);
+
+INSERT INTO disponibilitate VALUES (
+    10,
+    21,
+    55
+);
+
+INSERT INTO disponibilitate VALUES (
+    10,
+    22,
+    35
+);
+
+INSERT INTO disponibilitate VALUES (
+    5,
+    23,
+    63
+);
+
+INSERT INTO disponibilitate VALUES (
+    5,
+    24,
+    150
+);
+
+INSERT INTO disponibilitate VALUES (
+    6,
+    25,
+    162
+);
+
+INSERT INTO disponibilitate VALUES (
+    7,
+    22,
+    110
+);
+
+INSERT INTO disponibilitate VALUES (
+    8,
+    21,
+    56
+);
+
+INSERT INTO disponibilitate VALUES (
+    8,
+    1,
+    67
+);
+
+INSERT INTO disponibilitate VALUES (
+    9,
+    3,
+    75
+);
+
+INSERT INTO disponibilitate VALUES (
+    10,
+    2,
+    24
+);
+
+INSERT INTO disponibilitate VALUES (
+    10,
+    7,
+    19
+);
+
+INSERT INTO disponibilitate VALUES (
+    10,
+    8,
+    3
+);
+
+INSERT INTO review VALUES (
+    1,
+    3,
+    'Problema cu tavita pentru SIM - s-a deschis foarte, foarte greu si a dus la deteriorarea produsului!
+Nu vine cu incarcator sau casti! :( Pentru cine nu a avut modele mai noi de la iPhone, nu poate recicla fostele accesorii.'
+    ,
+    TO_DATE('24/03/2018', 'dd/mm/yyyy'),
+    1,
+    1
+);
+
+INSERT INTO review VALUES (
+    2,
+    5,
+    'Folosesc pentru prima data iPhone. Pana in prezent am schimbat nenumarate telefoane care func?ionau in sistemul android. Trebuie sa recunosc ca eram speriat la început de cum ma voi descurca. La o s?pt?mâna distan?? de la achizi?ionare pot spune ca sistemul de lucru este mai simplu decât mi-a? fi imaginat, rapiditatea cu care func?ioneaz? este peste ceea ce am avut pana in prezent.
+Concluzionând, recomand cu toat? încrederea achizi?ionarea acestui iPhone.'
+    ,
+    TO_DATE('2/03/2020', 'dd/mm/yyyy'),
+    23,
+    1
+);
+
+INSERT INTO review VALUES (
+    3,
+    5,
+    'Groaznic... L-am returnat a doua zi.',
+    TO_DATE('24/03/2018', 'dd/mm/yyyy'),
+    5,
+    5
+);
+
+INSERT INTO review VALUES (
+    4,
+    2,
+    'Nu se potrivesc marimile.',
+    TO_DATE('5/1/2019', 'dd/mm/yyyy'),
+    6,
+    9
+);
+
+INSERT INTO review VALUES (
+    5,
+    5,
+    'Foarte bun',
+    TO_DATE('23/06/2019', 'dd/mm/yyyy'),
+    16,
+    10
+);
+
+INSERT INTO review VALUES (
+    6,
+    5,
+    'Recomand cu toata increderea',
+    TO_DATE('2/03/2021', 'dd/mm/yyyy'),
+    9,
+    11
+);
+
+INSERT INTO review VALUES (
+    7,
+    1,
+    'Un fel de maioneza acra (de la otetul din sos), n-are nicio treaba cu cheddar-ul.',
+    TO_DATE('24/08/2021', 'dd/mm/yyyy'),
+    6,
+    12
+);
+
+INSERT INTO review VALUES (
+    8,
+    5,
+    'Super.',
+    TO_DATE('5/11/2021', 'dd/mm/yyyy'),
+    6,
+    21
+);
+
+INSERT INTO review VALUES (
+    9,
+    3,
+    'Lasa tenul usor gras dup? aplicare.',
+    TO_DATE('23/10/2021', 'dd/mm/yyyy'),
+    6,
+    22
+);
+
+
+--6. Să se afișeze primii 35 de utilizatori înscriși pe site. Apoi, să se afișeze numărul de utilizatori care nu și-au înscris locația pe site și id-ul fiecăruia.
+
+SET SERVEROUTPUT ON;
+
+CREATE OR REPLACE PROCEDURE ex6 AS
+
+    TYPE tablou IS
+        TABLE OF utilizator%rowtype INDEX BY PLS_INTEGER;
+    TYPE vector IS
+        VARRAY(30) OF NUMBER;
+    vec   vector := vector();
+    t     tablou;
+    k     NUMBER := 0;
+BEGIN
+    SELECT
+        *
+    BULK COLLECT
+    INTO t
+    FROM
+        utilizator
+    WHERE
+        ROWNUM <= 35;
+
+    dbms_output.put_line('Utilizatorii inscrisi sunt: ');
+    FOR i IN t.first..t.last LOOP
+        dbms_output.put_line(t(i).nume
+                             || ' cu id '
+                             || t(i).id_utilizator);
+
+        IF t(i).id_locatie IS NULL THEN
+            vec.extend;
+            k := k + 1;
+            vec(k) := t(i).id_utilizator;
+        END IF;
+
+    END LOOP;
+
+    dbms_output.put_line(vec.count || ' utilizatori nu si-au inscris locatia pe site. Id-urile acestora sunt: ');
+    FOR i IN vec.first..vec.last LOOP dbms_output.put_line(i
+                                                           || '. '
+                                                           || vec(i));
+    END LOOP;
+
+END;
+/
+BEGIN
+    ex6();
+END;
+/
+
+
+--7.Din păcate, clienții nu prea scriu review-uri. De aceea, magazinul va trimite un mail de mulțumire fiecărui utilizator care a scris cel puțin o recenzie, urmând să îi trimită un voucher utilizatorului cu cele mai multe review-uri. În cursor se vor reține adresa de email și numărul de review-uri scrise.
+
+CREATE OR REPLACE PROCEDURE ex7 AS
+
+    v_email   utilizator.email%TYPE;
+    v_nr      NUMBER;
+    CURSOR c IS
+    SELECT
+        email,
+        COUNT(id_review)
+    FROM
+        utilizator   u
+        JOIN review       r ON ( u.id_utilizator = r.id_utilizator )
+    GROUP BY
+        email;
+
+BEGIN
+    OPEN c;
+    LOOP
+        FETCH c INTO
+            v_email,
+            v_nr;
+        EXIT WHEN c%notfound;
+        IF v_nr = 1 THEN
+            dbms_output.put_line('Utilizatorul cu adresa de email '
+                                 || v_email
+                                 || ' a scris o recenzie.');
+        ELSE
+            dbms_output.put_line('Utilizatorul cu adresa de email '
+                                 || v_email
+                                 || ' a scris '
+                                 || v_nr
+                                 || ' recenzii.');
+        END IF;
+
+    END LOOP;
+
+    CLOSE c;
+END;
+/
+
+BEGIN
+    ex7();
+END;
+/
+
+
+--8. Să se numere tipurile de produse pe care le are un depozit dat ca parametru prin id. Tratați excepțiile
+
+SET SERVEROUTPUT ON;
+
+CREATE OR REPLACE FUNCTION ex8 (
+    nr NUMBER
+) RETURN NUMBER IS
+
+    nr_prod   NUMBER;
+    TYPE tbl IS
+        TABLE OF depozit%rowtype INDEX BY PLS_INTEGER;
+    aux       tbl;
+    invalid_number EXCEPTION;
+    no_data_found_1 EXCEPTION;
+    no_data_found_2 EXCEPTION;
+BEGIN
+    IF nr < 0 THEN
+        RAISE invalid_number;
+    END IF;
+    SELECT
+        *
+    BULK COLLECT
+    INTO aux
+    FROM
+        depozit
+    WHERE
+        nr = id_depozit;
+
+    IF SQL%notfound THEN
+        RAISE no_data_found_1;
+    END IF;
+    
+    SELECT
+        COUNT(p.id_produs)
+    INTO nr_prod
+    FROM
+        depozit           d
+        JOIN disponibilitate   disp ON ( d.id_depozit = disp.id_depozit )
+        JOIN produs            p ON ( p.id_produs = disp.id_produs )
+    WHERE
+        d.id_depozit = nr;
+
+    IF nr_prod = 0 THEN
+        RAISE no_data_found_2;
+    ELSE
+        RETURN nr_prod;
+    END IF;
+EXCEPTION
+    WHEN no_data_found_1 THEN
+        dbms_output.put_line('Nu exista depozitul cu id-ul ' || nr);
+        RETURN -1;
+    WHEN no_data_found_2 THEN
+        dbms_output.put_line('Depozitul nu are produse');
+        RETURN -1;
+    WHEN invalid_number THEN
+        dbms_output.put_line('Nu exista depozite cu id negativ.');
+        RETURN -1;
+    WHEN OTHERS THEN
+        dbms_output.put_line('Cod eroare: ' || sqlcode);
+        dbms_output.put_line('Mesaj eroare: ' || sqlerrm);
+        RETURN -1;
+
+END;
+/
+
+DECLARE
+    aux NUMBER;
+BEGIN
+    aux := ex8(1);
+    dbms_output.put_line(aux);
+END;
+/
+
+DECLARE
+aux NUMBER;
+BEGIN
+aux := ex8(-1);
+dbms_output.put_line(aux);
+END;
+/
+
+DECLARE
+    aux NUMBER;
+BEGIN
+    aux := ex8(99);
+    dbms_output.put_line(aux);
+END;
+/
+/
+DECLARE
+    aux NUMBER;
+BEGIN
+    aux := ex8(11);
+    dbms_output.put_line(aux);
+END;
+/
+
+--9. Să se afișeze produsul cu rating comandat de un utilizator transmis ca parametru prin id. Să se trateze excepțiile.
+
+CREATE OR REPLACE PROCEDURE ex9 (
+    nr NUMBER
+) AS
+
+    denumire_prod   produs.denumire_produs%TYPE;
+    TYPE tbl IS
+        TABLE OF utilizator%rowtype INDEX BY PLS_INTEGER;
+    aux             tbl;
+    invalid_number EXCEPTION;
+    no_data_found_1 EXCEPTION;
+    no_data_found_2 EXCEPTION;
+BEGIN
+    IF nr < 0 THEN
+        RAISE invalid_number;
+    END IF;
+    SELECT
+        *
+    BULK COLLECT
+    INTO aux
+    FROM
+        utilizator
+    WHERE
+        nr = id_utilizator;
+
+    IF SQL%notfound THEN
+        RAISE no_data_found_1;
+    END IF;
+    SELECT
+        p.denumire_produs
+    INTO denumire_prod
+    FROM
+        utilizator        u
+        JOIN plasare_comanda   pc ON ( u.id_utilizator = pc.id_utilizator )
+        JOIN comanda           c ON ( pc.id_comanda = c.id_comanda )
+        JOIN continut          cc ON ( cc.id_comanda = c.id_comanda )
+        JOIN produs            p ON ( p.id_produs = cc.id_produs )
+    WHERE
+        u.id_utilizator = nr
+        AND p.rating > 0;
+
+    dbms_output.put_line(denumire_prod);
+EXCEPTION
+    WHEN no_data_found THEN
+        dbms_output.put_line('Nu exista produse cu rating comandate de acest utilizator.');
+    WHEN invalid_number THEN
+        dbms_output.put_line('Nu exista utilizatori cu id negativ.');
+    WHEN too_many_rows THEN
+        dbms_output.put_line('Exista mai multe produse cu rating comandate de acest utilizator.');
+    WHEN OTHERS THEN
+        dbms_output.put_line('Cod eroare: ' || sqlcode);
+        dbms_output.put_line('Mesaj eroare: ' || sqlerrm);
+END;
+
+
+/
+BEGIN
+    Ex9(7);
+END;
+/
+
+BEGIN
+    ex9(1);
+END;
+/
+BEGIN
+    ex9(12);
+END;
+/
+
+
+--10. Pe data de 6 ianuarie, magazinul își serbează aniversarea. Acesta pregătește o zi plină de promoții. Totuși, pentru a pregati stocurile, magazinul dorește blocarea site-ului în acea dată, între orele 02 și 07, urmând ca la 07 să înceapă reducerile.
+
+CREATE OR REPLACE TRIGGER ex10 BEFORE
+    INSERT OR UPDATE OR DELETE ON comanda
+BEGIN
+    IF to_char(sysdate, 'dd/mm') = '09/01' AND ( to_char(sysdate, 'hh24') BETWEEN 2 AND 7 ) THEN
+        raise_application_error(-20001, 'Inca pregatim reducerile... va asteptam incepand cu ora 07!');
+    END IF;
+END;
+
+DELETE FROM comanda
+WHERE
+    id_comanda = 1;
+
+--11. Pentru a evita anumite erori în baza de date, nu se va permite modificarea orașului din tabela Locație (deoarece nu are sens).
+
+CREATE OR REPLACE TRIGGER ex11 BEFORE
+    UPDATE OF oras ON locatie
+    FOR EACH ROW
+    WHEN ( new.oras != old.oras )
+BEGIN
+    raise_application_error(-20002, 'Orasele nu pot fi modificate.');
+END;
+/
+
+UPDATE locatie
+SET
+    oras = 'Abc';
+
+
+ --12. Nu se va permite modificarea bazei de date în afara orelor în care se poate lucra (de la 7 până la 21).
+
+CREATE OR REPLACE TRIGGER ex12 BEFORE CREATE OR DROP OR ALTER ON DATABASE BEGIN
+    IF ( to_char(sysdate, 'HH24') NOT BETWEEN 7 AND 21 ) THEN
+        raise_application_error(-20002, 'Nu se poate modifica baza de date in afara orelor 7 si 21.');
+    END IF;
+END;
+
+--13.  CREATE OR REPLACE PACKAGE proiect AS
+    PROCEDURE ex6;
+
+    PROCEDURE ex7;
+
+    FUNCTION ex8 (
+        nr NUMBER
+    ) RETURN NUMBER;
+
+    PROCEDURE ex9 (
+        nr NUMBER
+    );
+
+END proiect;
+/
+
+CREATE OR REPLACE PACKAGE BODY proiect AS
+
+    PROCEDURE ex6 AS
+
+        TYPE tablou IS
+            TABLE OF utilizator%rowtype INDEX BY PLS_INTEGER;
+        TYPE vector IS
+            VARRAY(30) OF NUMBER;
+        vec   vector := vector();
+        t     tablou;
+        k     NUMBER := 0;
+    BEGIN
+        SELECT
+            *
+        BULK COLLECT
+        INTO t
+        FROM
+            utilizator
+        WHERE
+            ROWNUM <= 35;
+
+        dbms_output.put_line('Utilizatorii inscrisi sunt: ');
+        FOR i IN t.first..t.last LOOP
+            dbms_output.put_line(t(i).nume
+                                 || ' cu id '
+                                 || t(i).id_utilizator);
+
+            IF t(i).id_locatie IS NULL THEN
+                vec.extend;
+                k := k + 1;
+                vec(k) := t(i).id_utilizator;
+            END IF;
+
+        END LOOP;
+
+        dbms_output.put_line(vec.count || ' utilizatori nu si-au inscris locatia pe site. Id-urile acestora sunt: ');
+        FOR i IN vec.first..vec.last LOOP dbms_output.put_line(i
+                                                               || '. '
+                                                               || vec(i));
+        END LOOP;
+
+    END;
+
+    PROCEDURE ex7 AS
+
+        v_email   utilizator.email%TYPE;
+        v_nr      NUMBER;
+        CURSOR c IS
+        SELECT
+            email,
+            COUNT(id_review)
+        FROM
+            utilizator   u
+            JOIN review       r ON ( u.id_utilizator = r.id_utilizator )
+        GROUP BY
+            email;
+
+    BEGIN
+        OPEN c;
+        LOOP
+            FETCH c INTO
+                v_email,
+                v_nr;
+            EXIT WHEN c%notfound;
+            IF v_nr = 1 THEN
+                dbms_output.put_line('Utilizatorul cu adresa de email '
+                                     || v_email
+                                     || ' a scris o recenzie.');
+            ELSE
+                dbms_output.put_line('Utilizatorul cu adresa de email '
+                                     || v_email
+                                     || ' a scris '
+                                     || v_nr
+                                     || ' recenzii.');
+            END IF;
+
+        END LOOP;
+
+        CLOSE c;
+    END;
+
+    FUNCTION ex8 (
+        nr NUMBER
+    ) RETURN NUMBER IS
+
+        nr_prod   NUMBER;
+        TYPE tbl IS
+            TABLE OF depozit%rowtype INDEX BY PLS_INTEGER;
+        aux       tbl;
+        invalid_number EXCEPTION;
+        no_data_found_1 EXCEPTION;
+        no_data_found_2 EXCEPTION;
+    BEGIN
+        IF nr < 0 THEN
+            RAISE invalid_number;
+        END IF;
+        SELECT
+            *
+        BULK COLLECT
+        INTO aux
+        FROM
+            depozit
+        WHERE
+            nr = id_depozit;
+
+        IF SQL%notfound THEN
+            RAISE no_data_found_1;
+        END IF;
+        SELECT
+            COUNT(p.id_produs)
+        INTO nr_prod
+        FROM
+            depozit           d
+            JOIN disponibilitate   disp ON ( d.id_depozit = disp.id_depozit )
+            JOIN produs            p ON ( p.id_produs = disp.id_produs )
+        WHERE
+            d.id_depozit = nr;
+
+        IF nr_prod = 0 THEN
+            RAISE no_data_found_2;
+        ELSE
+            RETURN nr_prod;
+        END IF;
+    EXCEPTION
+        WHEN no_data_found_1 THEN
+            dbms_output.put_line('Nu exista depozitul cu id-ul ' || nr);
+            RETURN -1;
+        WHEN no_data_found_2 THEN
+            dbms_output.put_line('Depozitul nu are produse');
+            RETURN -1;
+        WHEN invalid_number THEN
+            dbms_output.put_line('Nu exista depozite cu id negativ.');
+            RETURN -1;
+        WHEN OTHERS THEN
+            dbms_output.put_line('Cod eroare: ' || sqlcode);
+            dbms_output.put_line('Mesaj eroare: ' || sqlerrm);
+            RETURN -1;
+    END;
+
+    PROCEDURE ex9 (
+        nr NUMBER
+    ) AS
+
+        denumire_prod   produs.denumire_produs%TYPE;
+        TYPE tbl IS
+            TABLE OF utilizator%rowtype INDEX BY PLS_INTEGER;
+        aux             tbl;
+        invalid_number EXCEPTION;
+        no_data_found_1 EXCEPTION;
+        no_data_found_2 EXCEPTION;
+    BEGIN
+        IF nr < 0 THEN
+            RAISE invalid_number;
+        END IF;
+        SELECT
+            *
+        BULK COLLECT
+        INTO aux
+        FROM
+            utilizator
+        WHERE
+            nr = id_utilizator;
+
+        IF SQL%notfound THEN
+            RAISE no_data_found_1;
+        END IF;
+        SELECT
+            p.denumire_produs
+        INTO denumire_prod
+        FROM
+            utilizator        u
+            JOIN plasare_comanda   pc ON ( u.id_utilizator = pc.id_utilizator )
+            JOIN comanda           c ON ( pc.id_comanda = c.id_comanda )
+            JOIN continut          cc ON ( cc.id_comanda = c.id_comanda )
+            JOIN produs            p ON ( p.id_produs = cc.id_produs )
+        WHERE
+            u.id_utilizator = nr
+            AND p.rating > 0;
+
+        dbms_output.put_line(denumire_prod);
+    EXCEPTION
+        WHEN no_data_found THEN
+            dbms_output.put_line('Nu exista produse cu rating comandate de acest utilizator.');
+        WHEN invalid_number THEN
+            dbms_output.put_line('Nu exista utilizatori cu id negativ.');
+        WHEN too_many_rows THEN
+            dbms_output.put_line('Exista mai multe produse cu rating comandate de acest utilizator.');
+        WHEN OTHERS THEN
+            dbms_output.put_line('Cod eroare: ' || sqlcode);
+            dbms_output.put_line('Mesaj eroare: ' || sqlerrm);
+    END;
+
+END proiect;
+/
+
+
+--14.
+CREATE OR REPLACE PACKAGE ex14 AS
+    TYPE rec IS RECORD (
+        nume   VARCHAR2(300),
+        pret   NUMBER
+    );
+    TYPE tablou IS
+        TABLE OF comanda%rowtype;
+    PROCEDURE get_nr_utilizatori;
+
+    PROCEDURE proc_get_livrat;
+
+    FUNCTION get_produs (
+        nr NUMBER
+    ) RETURN categorie.denumire_categorie%TYPE;
+
+    FUNCTION modifica_pret (
+        id_prod   produs.id_produs%TYPE,
+        procent   NUMBER
+    ) RETURN NUMBER;
+
+END ex14;
+
+CREATE OR REPLACE PACKAGE BODY ex14 AS
+
+    FUNCTION get_produs (
+        nr NUMBER
+    ) RETURN categorie.denumire_categorie%TYPE IS
+        v_prod   rec;
+        v_cat    categorie.denumire_categorie%TYPE;
+    BEGIN
+        SELECT
+            denumire_produs,
+            pret
+        INTO v_prod
+        FROM
+            produs
+        WHERE
+            id_produs = nr;
+
+        SELECT
+            denumire_categorie
+        INTO v_cat
+        FROM
+            produs      p
+            JOIN categorie   c ON ( p.id_categorie = c.id_categorie )
+        WHERE
+            p.id_produs = nr;
+
+        dbms_output.put_line('Produsul cautat este: '
+                             || v_prod.nume
+                             || ' cu pretul '
+                             || v_prod.pret
+                             || ' lei.');
+
+        RETURN v_cat;
+    END get_produs;
+
+    PROCEDURE proc_get_livrat AS
+        t   tablou := tablou();
+        k   NUMBER := 0;
+    BEGIN
+        SELECT
+            *
+        BULK COLLECT
+        INTO t
+        FROM
+            comanda
+        WHERE
+            lower(comanda.status) = 'livrat';
+
+        FOR i IN 1..t.last LOOP dbms_output.put_line('Comanda nr '
+                                                     || t(i).id_comanda
+                                                     || ' din data '
+                                                     || t(i).data);
+        END LOOP;
+
+    END proc_get_livrat;
+
+    PROCEDURE get_nr_utilizatori AS
+        nr NUMBER;
+    BEGIN
+        SELECT
+            COUNT(*)
+        INTO nr
+        FROM
+            utilizator;
+
+        dbms_output.put_line(nr);
+    END get_nr_utilizatori;
+
+    FUNCTION modifica_pret (
+        id_prod   produs.id_produs%TYPE,
+        procent   NUMBER
+    ) RETURN NUMBER IS
+        pret_final NUMBER;
+    BEGIN
+        UPDATE produs
+        SET
+            pret = pret + procent * pret / 100
+        WHERE
+            id_produs = id_prod;
+
+        SELECT
+            pret
+        INTO pret_final
+        FROM
+            produs
+        WHERE
+            id_produs = id_prod;
+
+        RETURN pret_final;
+    END modifica_pret;
+
+END ex14;
+
+
+DECLARE
+aux NUMBER;
+BEGIN
+aux := ex14.modifica_pret(7, 10);
+dbms_output.put_line(aux);
+END;
+
+
+
+
+
+
+
+
+
+
+--6.
